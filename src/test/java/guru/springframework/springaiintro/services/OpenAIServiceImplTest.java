@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-class OpenAIServiceImplTest {
+class OpenAIServiceImplTest {  // this is for testing
 
     @Autowired
     OpenAIService openAIService;
@@ -14,7 +14,8 @@ class OpenAIServiceImplTest {
     @Test
     void getAnswer() {
 
-        String answer = openAIService.getAnswer("Tell me a dad joke.");
+        String answer = openAIService.getAnswer("\"Write a short story about a robot who discovers emotions after finding" +
+                " a dusty old book of poetry in a post-apocalyptic library.\"\n");
         System.out.println("Got The answer");
         System.out.println(answer);
 
