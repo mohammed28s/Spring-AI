@@ -1,6 +1,8 @@
 package guru.springframework.springaiintro.services;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.springframework.springaiintro.model.Answer;
 import guru.springframework.springaiintro.model.GetCapitalRequest;
@@ -50,7 +52,18 @@ public class OpenAIServiceImpl implements OpenAIService {
         Prompt prompt = promptTemplate.create(Map.of("stateOrCountry", getCapitalRequest.stateOrCountry()));
         ChatResponse response = chatModel.call(prompt);
 
-        return new Answer(response.getResult().getOutput().getText());
+        System.out.println(response.getResult().getOutput().getText());
+        String responseString;
+
+        try {
+            JsonNode jsonNode = objectMapper.readTree(response.getResult().getOutput().getText());
+            responseString = jsonNode.get("answer").asText();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new Answer(responseString);
+        //return new Answer(response.getResult().getOutput().getText());
     }
 
 
